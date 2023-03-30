@@ -13,7 +13,7 @@ let lastWeekFridayDate = lastFriday.toLocaleDateString('en-US', options);
 
 console.log(`Report from ${lastWeekMondayDate} \u{1F447} to ${lastWeekFridayDate} \u{1F44C}`); // Output: Report from Monday, March 21, 2023 👇 to Friday, March 25, 2023 👌
    const rep = `Report from ${lastWeekMondayDate} \u{1F447} to ${lastWeekFridayDate} \u{1F4C5}`;
-const slackResult =  Axios.post('https://hooks.slack.com/services/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', {
+const slackResult =  Axios.post(process.env.WEBHOOK, {
     text : rep,
   })
 getAllTasks()
@@ -86,20 +86,20 @@ async function getAllTasks() {
     let minutes = Math.floor((sum % 3600) / 60); // calculate remaining minutes
     //console.log(name, "-->", hours + "h " + minutes + "m")
     const res = name+ "-->"+ hours + "h " + minutes + "m";
-    // const slackResult = await Axios.post('https://hooks.slack.com/services/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', {
+    // const slackResult = await Axios.post(, {
     //   text : res,
     // })
     
     if(hours > 40) {
         const res = name+ ": "+ hours + "h " + minutes + "m" + ' \u274E' ; 
         console.log(res); 
-        const slackResult = await Axios.post('https://hooks.slack.com/services/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', {
+        const slackResult = await Axios.post(process.env.WEBHOOK, {
       text : res,
     })
     }
     else {
         const res = name+ ": "+ hours + "h " + minutes + "m" + ' \u274C' ; 
-       const slackResult = await Axios.post('https://hooks.slack.com/services/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', {
+       const slackResult = await Axios.post(process.env.WEBHOOK, {
       text : res,
     }) 
     }

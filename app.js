@@ -87,7 +87,7 @@ async function getTaskTime(taskID, name) {
   const res = name+ "-->"+ hours + "h " + minutes + "m";
   const rep = `Report from ${lastWeekMondayDate} \u{1F447} to ${lastWeekFridayDate} \u{1F4C5} for ${name} is ${hours}hours ${minutes} Minutes`;
   //posting it on Slack
-  const slackResult = await Axios.post('https://hooks.slack.com/services/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', {
+  const slackResult = await Axios.post(process.env.WEBHOOK, {
     text : rep,
   })
   
