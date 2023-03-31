@@ -45,7 +45,7 @@ async function getTaskTime(taskID, name) {
   
   //gettig last week's friday date
   let currentDate = new Date(); // get current date
-  let lastFridayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - (currentDate.getDay() + 6) % 7 - 2); // calculate last Friday's date
+  let lastFridayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() - 1); // calculate last Friday's date
   let formattedLastFridayDate = lastFridayDate.toISOString(); // format the date in ISO format
    
   
