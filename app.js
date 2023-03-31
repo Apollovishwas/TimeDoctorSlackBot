@@ -1,4 +1,5 @@
 //importing necessary Libs
+const fetch = require('node-fetch');
 var express = require('express');
 const scheduledTask = require('./scheduler')
 require('dotenv').config();
