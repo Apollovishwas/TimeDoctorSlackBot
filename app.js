@@ -69,7 +69,17 @@ async function getTaskTime(taskID, name) {
 
   //calculating number of hours      
   const data = await resp.text();
-  var datum = (JSON.parse(data)); 
+  try {
+    datum = JSON.parse(data);
+  } catch (e) {
+    // Handle JSON parsing errors
+    console.error('Error parsing JSON:', e.message);
+    
+    await Axios.post(process.env.WEBHOOK, {
+     text : 'Error Occured.',
+   })
+   return
+  } 
   const users = datum.data.users;
   let sum = 0;
   for (let i = 0; i < users.length; i++) {
