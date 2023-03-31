@@ -3,7 +3,7 @@ const Axios = require('axios');
 const fetch = require('node-fetch');
 
 const scheduledTask = () => {
-  cron.schedule('*/1 * * * *', () => {
+  cron.schedule('30 8 * * 1', () => {
     // Replace the console.log() statement with your desired code to be executed
     let today = new Date();
 let lastMonday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDay() + 6) % 7 - 7);
