@@ -1,7 +1,9 @@
 const cron = require('node-cron');
 const Axios = require('axios');
+const fetch = require('node-fetch');
+
 const scheduledTask = () => {
-  cron.schedule('*/9 * * * *', () => {
+  cron.schedule('*/1 * * * *', () => {
     // Replace the console.log() statement with your desired code to be executed
     let today = new Date();
 let lastMonday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDay() + 6) % 7 - 7);
@@ -91,7 +93,7 @@ async function getAllTasks() {
     // })
     
     if(hours > 40) {
-        const res = name+ ": "+ hours + "h " + minutes + "m" + ' \u274E' ; 
+        const res = name+ ": "+ hours + "h " + minutes + "m" + ' \u2705' ; 
         console.log(res); 
         const slackResult = await Axios.post(process.env.WEBHOOK, {
       text : res,
