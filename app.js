@@ -17,7 +17,7 @@ var jsonParser = bodyParser.json()
 //calling Scheduler function
 scheduledTask();
 
-
+let srtingAvail = 1;
 //Stuff to show when the server is loaded. 
 app.get('/', (req, res) => {
   console.log( );
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 
   //call when user actually 
-  app.post('/timedoct',urlencodedParser,async function(req,res) {
+  app.post('/td',urlencodedParser,async function(req,res) {
     const query = encodeURIComponent(req.body.text);
     res.send("Processing your Query");
     //calling a function to get task ID
@@ -36,6 +36,7 @@ app.get('/', (req, res) => {
 
 //when /ai command is executed
 async function getTaskTime(taskID, name) {
+ 
 
  //gettig last week's monday's date
   let today = new Date(); // get today's date
@@ -101,20 +102,53 @@ async function getTaskTime(taskID, name) {
       const projectId = 'Y2UusOII1DZcBDBX'; // replace with your project id
       const apiKey = '1BjSdI-67JHi1cB7Vzyl9whm0y8vO4q0J1OWtm_uZNAo'; // replace with your API key
       const company = 'Y2Uuqv49XA0GADkC'; // replace with your company id
+
+
       const url = `https://api2.timedoctor.com/api/1.0/tasks?company=${company}&token=${apiKey}`;
       const response = await fetch(url, { method: 'GET' });
       const data = await response.text();
-      const result = {};
+
+      
      // console.log(data);
-      let datum = JSON.parse(data)
+     let datum;
+     try {
+       datum = JSON.parse(data);
+     } catch (e) {
+       // Handle JSON parsing errors
+       console.error('Error parsing JSON:', e.message);
+       
+       await Axios.post(process.env.WEBHOOK, {
+        text : 'Error Occured.',
+      })
+      return
+     }
+   
+  
       let name = nameOfComp;
         //filtering task user wants
-        datum.data.forEach(item => {
+        let stat = 0;
+
+        for (const item of datum.data) {
           if (item.name.toLowerCase().includes(name.toLowerCase())) {
-            //calling a function to 
+            stat = 1;
             getTaskTime(item.id, item.name);
+            break; // Exit the loop early if we find a match
           }
-        });
+        }
+
+        if (stat === 0) {
+          console.log('No matching tasks found.');
+          async function myAsyncFunction() {
+            await Axios.post(process.env.WEBHOOK, {
+              text : 'No records for the this task. Try again.',
+            })
+          }
+           myAsyncFunction();
+        } else {
+          console.log('Done searching.');
+        }
+
+       
     }
 
 //do not edit any of these. APP SETUP

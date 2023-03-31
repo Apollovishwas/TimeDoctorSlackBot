@@ -34,7 +34,17 @@ async function getAllTasks() {
     const result = {};
 
    // console.log(data);
-    let datum = JSON.parse(data)
+   try {
+    datum = JSON.parse(data);
+  } catch (e) {
+    // Handle JSON parsing errors
+    console.error('Error parsing JSON:', e.message);
+    
+    await Axios.post(process.env.WEBHOOK, {
+     text : 'Error Occured.',
+   })
+   return
+  }
     console.log(typeof datum)
     datum.data.forEach(item => {
        // console.log(`ID: ${item.id}, Name: ${item.name}`);
@@ -76,7 +86,17 @@ async function getAllTasks() {
           {method: 'GET'}
         );
     const data = await resp.text();
-    var datum = (JSON.parse(data)); 
+    try {
+      datum = JSON.parse(data);
+    } catch (e) {
+      // Handle JSON parsing errors
+      console.error('Error parsing JSON:', e.message);
+      
+      await Axios.post(process.env.WEBHOOK, {
+       text : 'API Rate exceeded for '+ name,
+     })
+     return
+    }
     //console.log(datum.data.users)
     const users = datum.data.users;
     let sum = 0;
